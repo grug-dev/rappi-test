@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col-md-4">
+        <h3>Test Case File</h3>
+        <div class="well drop-zone" appDropFile [ngClass]="{'file-over': isOverElement}" (mouseSobre)=" isOverElement = $event" [archivos]="archivos">
+            <h4>Deje caer aqui los archivos Test Cases</h4>
+            <img src="assets/drop-images.png" alt="">
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h4>Cube Summation</h4>
+        <button class="btn btn-success" (click)="subirArchivo()" [disabled]="!(archivos | filesWaiting)">Ejecutar</button>
+        <button class="btn btn-danger" (click)="limpiar()" [disabled]="archivos.length == 0 || (archivos | filesWaiting)">Limpiar</button>
+        <table class="table table-sm table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre Archivo</th>
+                    <th scope="col">Tamaño</th>
+                    <th scope="col">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let file of archivos">
+                    <td>{{ file.nombreArchivo }}</td>
+                    <td>{{ file.archivo.size / 1024 / 1024 | number: '.2-2'}} MB</td>
+                    <td>{{ file.resultado }} </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div>
+<br>
+<div *ngIf="results && results?.msg.length > 0" class="alert" role="alert" [ngClass]="{
+  'alert-danger':results.status !== 200,
+  'alert-success':results.status === 200
+  }">
+    {{ results?.msg }}
+</div>
+<br>
+<div *ngIf="currentfile">
+    <h4>Resultados del Proceso del Archivo: {{ currentfile.nombreArchivo }}</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col" class="text-center">Matriz</th>
+                        <th scope="col" class="text-center">Operaciones</th>
+                        <th scope="col" class="text-center">Resultado QUERY</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="results?.lstCases">
+                    <tr *ngFor=" let test of results.lstCases;let i = index ">
+                        <th scope="row " class="text-center"> {{ i + 1 }} </th>
+                        <td class="text-center">{{ test.matrixN | matrix}}</td>
+                        <td class="text-center">
+                            <table class="table">
+                                <tr *ngFor="let oper of test.operations;">
+                                    <td>{{ oper.operation }}</td>
+                                    <td>{{ oper.result }} </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="text-center">{{ test.result }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 ">
+            <br>
+            <h4>Respuesta Consola</h4>
+            <textarea class="text-center" rows="10" cols="24" (ngModelChange)="txtResults=$event" disabled [ngModel]='txtResults | txtarearesults'></textarea>
+        </div>
+
+    </div>
+</div>
