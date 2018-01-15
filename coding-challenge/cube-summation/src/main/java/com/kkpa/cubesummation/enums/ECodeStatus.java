@@ -8,6 +8,10 @@ public enum ECodeStatus {
 	OPERATION_UNAUTHORIZED(310, "Operacion no permitida"),
 	MATRIX_ERROR(311,"No se pudo obtener el número que define la matrix. "),
 	OPERATION_ERROR(311,"No se pudo obtener el número operaciones. "),
+	UPDATE_RULE_LENGTH_ERROR(312,"La operación update debe estar compuesta por 5 elementos. "),
+	QUERY_RULE_LENGTH_ERROR(313,"La operación query debe estar compuesta por 7 elementos. "),
+	UPDATE_OPERATION(314,"Se esperaba una operación UPDATE"),
+	QUERY_OPERATION(315,"Se esperaba una operación QUERY")
 	;
 	
 	private int code;

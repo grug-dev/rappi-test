@@ -6,18 +6,26 @@ import java.util.Map.Entry;
 import org.springframework.stereotype.Component;
 
 import com.kkpa.cubesummation.dto.OperationDTO;
+import com.kkpa.cubesummation.enums.ECodeStatus;
 import com.kkpa.cubesummation.enums.ETypeOperation;
+import com.kkpa.cubesummation.exceptions.CubeException;
 
 @Component("queryCubeStrategy")
 public class QueryCubeStrategy implements CubeStrategy {
 
 	@Override
-	public void process(OperationDTO operDTO, Map<String, Long> mapCube) {
+	public void process(OperationDTO operDTO, Map<String, Long> mapCube) throws CubeException {
 		String operation = operDTO.getOperation();
 		long sumBlock = 0;
 		operDTO.setType(ETypeOperation.QUERY);
 		
 		String[] partOperation = operation.split(" ");
+		if (partOperation.length != 7) {
+			throw new CubeException(ECodeStatus.QUERY_RULE_LENGTH_ERROR);
+		}
+		if (!partOperation[0].equals(ETypeOperation.QUERY.toString())) {
+			throw new CubeException(ECodeStatus.QUERY_OPERATION);
+		}
 		int x0 = Integer.parseInt(partOperation[1]);
 		int y0 = Integer.parseInt(partOperation[2]);
 		int z0 = Integer.parseInt(partOperation[3]);

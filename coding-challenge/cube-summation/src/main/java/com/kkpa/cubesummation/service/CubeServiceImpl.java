@@ -21,7 +21,8 @@ public class CubeServiceImpl implements CubeService {
 	
 	@Override
 	public void processCube(CubeDTO cubeDTO) throws CubeException {
-		cubeDTO.getOperations().stream().forEach( oper -> {
+		try {
+			cubeDTO.getOperations().stream().forEach( oper -> {
 				try {
 					ctxCube.process(oper , cubeDTO.getMapCube());
 					if (oper.getStatus() == ECodeStatus.OK.getCode()) {
@@ -30,9 +31,21 @@ public class CubeServiceImpl implements CubeService {
 						}
 					}					
 				} catch (CubeException e) {
-					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
 		});
+		}catch (Exception ex) {
+			if (ex.getCause() instanceof CubeException) {
+				CubeException cE = (CubeException) ex.getCause();
+				throw cE;
+			}
+			else {
+				throw ex;
+			}
+		}
+			
+		
+		
 		
 	}
 

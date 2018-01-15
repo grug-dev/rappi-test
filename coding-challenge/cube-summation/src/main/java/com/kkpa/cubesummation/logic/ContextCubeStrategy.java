@@ -8,16 +8,13 @@ import org.springframework.stereotype.Component;
 
 import com.kkpa.cubesummation.dto.OperationDTO;
 import com.kkpa.cubesummation.enums.ECodeStatus;
+import com.kkpa.cubesummation.enums.ETypeOperation;
 import com.kkpa.cubesummation.exceptions.CubeException;
 
 @Component("ctxCubeStrategy")
 public class ContextCubeStrategy {
 
 	private CubeStrategy strategy;
-
-	private static final String UPDATE = "UPDATE";
-
-	private static final String QUERY = "QUERY";
 
 	@Autowired
 	private ApplicationContext appCtx;
@@ -28,10 +25,10 @@ public class ContextCubeStrategy {
 	public void process(OperationDTO operationDTO, Map<String, Long> mapCube) throws CubeException {
 		String strategyName = null;
 		
-		if (operationDTO.getOperation().startsWith(UPDATE)) {
+		if (operationDTO.getOperation().startsWith(ETypeOperation.UPDATE.toString())) {
 			strategyName = "updateCubeStrategy";
 		}
-		else if (operationDTO.getOperation().startsWith(QUERY)) {
+		else if (operationDTO.getOperation().startsWith(ETypeOperation.QUERY.toString())) {
 			strategyName = "queryCubeStrategy";
 		}
 		if (strategyName == null) {
