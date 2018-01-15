@@ -1,7 +1,6 @@
 package com.kkpa.coderefactoring.enums;
 
 public enum EDriverStatus {	
-	NOT_EXIST(3),
 	ASSIGNED(0),
 	NOT_AVAILABLE(1);
 	

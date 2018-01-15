@@ -12,8 +12,8 @@ import com.kkpa.coderefactoring.service.DriverService;
 
 public class AssistanceController {
 
-	public int requestService(long idService, long idDriver) {
-		int result = EResponseStatus.OK.getCode();
+	public EResponseStatus requestService(long idService, long idDriver) {
+		EResponseStatus result = EResponseStatus.OK;
 		AssistanceService assistanceService = null; // Injected
 		DriverService driverService = null; // Injected
 		ServiceDTO serviceDTO = null;
@@ -22,23 +22,23 @@ public class AssistanceController {
 		// Validando Servicio
 		serviceDTO = assistanceService.find(idService);
 		if (serviceDTO == null) {
-			return EResponseStatus.NOT_EXIST.getCode();
+			return EResponseStatus.NOT_EXIST;
 		}
 
 		// Validando disponibilidad servicio
 		if (!assistanceService.isAvailable(serviceDTO)) {
-			return EResponseStatus.NOT_AVAILABLE.getCode();
+			return EResponseStatus.NOT_AVAILABLE;
 		}
 
 		// Validando Conductor
 		driverDTO = driverService.find(idDriver);
 		if (driverDTO == null) {
-			return EDriverStatus.NOT_EXIST.getCode();
+			return EResponseStatus.NOT_EXIST;
 		}
 
 		// Validando disponibilidad conductor
 		if (!driverService.isAvailable(driverDTO)) {
-			return EDriverStatus.NOT_AVAILABLE.getCode();
+			return EResponseStatus.NOT_AVAILABLE;
 		}
 
 		// Actualizando Servicio.
@@ -58,7 +58,7 @@ public class AssistanceController {
 		try {
 			sender.send(serviceDTO, message);
 		} catch (Exception e) {
-			result = EResponseStatus.NOTIFICATION_ERROR.getCode();
+			result = EResponseStatus.NOTIFICATION_ERROR;
 		}
 
 		return result;
