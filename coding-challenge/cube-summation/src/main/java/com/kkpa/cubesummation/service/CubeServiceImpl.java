@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.kkpa.cubesummation.dto.CubeDTO;
-import com.kkpa.cubesummation.dto.CubeTestCases;
+import com.kkpa.cubesummation.dto.CubeTestCasesDTO;
 import com.kkpa.cubesummation.enums.ECodeStatus;
 import com.kkpa.cubesummation.enums.ETypeOperation;
 import com.kkpa.cubesummation.exceptions.CubeException;
@@ -43,31 +43,39 @@ public class CubeServiceImpl implements CubeService {
 				throw ex;
 			}
 		}
-			
-		
-		
 		
 	}
 
 	@Override
-	public void processTestCases(CubeTestCases testCases) {
+	public void processTestCases(CubeTestCasesDTO testCases) throws CubeException {
 		if (testCases == null || testCases.getLstCases().isEmpty()) {
 			testCases.setStatus(ECodeStatus.ERROR.getCode());
 			return;
 		}
 		
-		testCases.getLstCases().stream().forEach(cube -> {
-			try {
-				processCube(cube);
-				cube.getResult().forEach( result -> {
-					testCases.getLstResults().add(result);
-				});				
-			} catch (CubeException e) {
-				e.printStackTrace();
+		try {
+			testCases.getLstCases().stream().forEach(cube -> {
+				try {
+					processCube(cube);
+					cube.getResult().forEach( result -> {
+						testCases.getLstResults().add(result);
+					});				
+				}  catch (CubeException e) {
+					throw new RuntimeException(e);
+				}
+			});
+			testCases.setStatus(ECodeStatus.OK.getCode());
+			testCases.setMsg(ECodeStatus.OK.getMsg());
+		}
+		catch (Exception ex) {
+			if (ex.getCause() instanceof CubeException) {
+				CubeException cE = (CubeException) ex.getCause();
+				throw cE;
 			}
-		});
-		testCases.setStatus(ECodeStatus.OK.getCode());
-		testCases.setMsg(ECodeStatus.OK.getMsg());
+			else {
+				throw ex;
+			}
+		}
 		
 	}
 	

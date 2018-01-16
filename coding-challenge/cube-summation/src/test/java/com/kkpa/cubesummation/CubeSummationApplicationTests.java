@@ -17,7 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.kkpa.cubesummation.dto.CubeDTO;
-import com.kkpa.cubesummation.dto.CubeTestCases;
+import com.kkpa.cubesummation.dto.CubeTestCasesDTO;
 import com.kkpa.cubesummation.dto.OperationDTO;
 import com.kkpa.cubesummation.enums.ECodeStatus;
 import com.kkpa.cubesummation.enums.ETypeOperation;
@@ -235,96 +235,100 @@ public class CubeSummationApplicationTests {
 
 	@Test
 	public void testMultipleSuccessTestCases() {
-		CubeTestCases testCases = (CubeTestCases) appCtx.getBean("cubeTestCases");
+		CubeTestCasesDTO testCases = (CubeTestCasesDTO) appCtx.getBean("cubeTestCases");
 		String operation = null;
 		OperationDTO operationDTO = null;
-		// 1 Case
-		// 4 5
-		// UPDATE 2 2 2 1
-		// QUERY 1 1 1 1 1 1
-		// QUERY 1 1 1 2 2 2
-		// QUERY 2 2 2 2 2 2
-		cubeDTO.setMatrixN(4);
-		// UPDATE 2 2 2 4
-		operation = "UPDATE 2 2 2 4";
-		operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-		operationDTO.setType(ETypeOperation.UPDATE);
-		operationDTO.setOperation(operation);
-		cubeDTO.getOperations().add(operationDTO);
 
-		// QUERY 1 1 1 3 3 3
-		operation = "QUERY 1 1 1 3 3 3";
-		operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-		operationDTO.setType(ETypeOperation.QUERY);
-		operationDTO.setOperation(operation);
-		cubeDTO.getOperations().add(operationDTO);
+		try {
+			// ****** 1 Case ********
+			// 4 5
+			// UPDATE 2 2 2 1
+			// QUERY 1 1 1 1 1 1
+			// QUERY 1 1 1 2 2 2
+			// QUERY 2 2 2 2 2 2
+			cubeDTO.setMatrixN(4);
+			// UPDATE 2 2 2 4
+			operation = "UPDATE 2 2 2 4";
+			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
+			operationDTO.setType(ETypeOperation.UPDATE);
+			operationDTO.setOperation(operation);
+			cubeDTO.getOperations().add(operationDTO);
 
-		// UPDATE 1 1 1 23
-		operation = "UPDATE 1 1 1 23";
-		operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-		operationDTO.setType(ETypeOperation.UPDATE);
-		operationDTO.setOperation(operation);
-		cubeDTO.getOperations().add(operationDTO);
+			// QUERY 1 1 1 3 3 3
+			operation = "QUERY 1 1 1 3 3 3";
+			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
+			operationDTO.setType(ETypeOperation.QUERY);
+			operationDTO.setOperation(operation);
+			cubeDTO.getOperations().add(operationDTO);
 
-		// QUERY 2 2 2 4 4 4
-		operation = "QUERY 2 2 2 4 4 4";
-		operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-		operationDTO.setType(ETypeOperation.QUERY);
-		operationDTO.setOperation(operation);
-		cubeDTO.getOperations().add(operationDTO);
+			// UPDATE 1 1 1 23
+			operation = "UPDATE 1 1 1 23";
+			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
+			operationDTO.setType(ETypeOperation.UPDATE);
+			operationDTO.setOperation(operation);
+			cubeDTO.getOperations().add(operationDTO);
 
-		// QUERY 1 1 1 3 3 3
-		operation = "QUERY 1 1 1 3 3 3";
-		operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-		operationDTO.setType(ETypeOperation.QUERY);
-		operationDTO.setOperation(operation);
-		cubeDTO.getOperations().add(operationDTO);
+			// QUERY 2 2 2 4 4 4
+			operation = "QUERY 2 2 2 4 4 4";
+			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
+			operationDTO.setType(ETypeOperation.QUERY);
+			operationDTO.setOperation(operation);
+			cubeDTO.getOperations().add(operationDTO);
 
-		// ****** 2 Case ********
-		// 2 4
-		// UPDATE 2 2 2 1
-		// QUERY 1 1 1 1 1 1
-		// QUERY 1 1 1 2 2 2
-		// QUERY 2 2 2 2 2 2
-		CubeDTO secondCubeDTO = (CubeDTO) appCtx.getBean("cubeDTO");
-		secondCubeDTO.setMatrixN(4);
-		// UPDATE 2 2 2 1
-		operation = "UPDATE 2 2 2 1";
-		operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-		operationDTO.setType(ETypeOperation.UPDATE);
-		operationDTO.setOperation(operation);
-		secondCubeDTO.getOperations().add(operationDTO);
+			// QUERY 1 1 1 3 3 3
+			operation = "QUERY 1 1 1 3 3 3";
+			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
+			operationDTO.setType(ETypeOperation.QUERY);
+			operationDTO.setOperation(operation);
+			cubeDTO.getOperations().add(operationDTO);
 
-		// QUERY 1 1 1 1 1 1
-		operation = "QUERY 1 1 1 1 1 1";
-		operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-		operationDTO.setType(ETypeOperation.QUERY);
-		operationDTO.setOperation(operation);
-		secondCubeDTO.getOperations().add(operationDTO);
+			// ****** 2 Case ********
+			// 2 4
+			// UPDATE 2 2 2 1
+			// QUERY 1 1 1 1 1 1
+			// QUERY 1 1 1 2 2 2
+			// QUERY 2 2 2 2 2 2
+			CubeDTO secondCubeDTO = (CubeDTO) appCtx.getBean("cubeDTO");
+			secondCubeDTO.setMatrixN(4);
+			// UPDATE 2 2 2 1
+			operation = "UPDATE 2 2 2 1";
+			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
+			operationDTO.setType(ETypeOperation.UPDATE);
+			operationDTO.setOperation(operation);
+			secondCubeDTO.getOperations().add(operationDTO);
 
-		// QUERY 1 1 1 2 2 2
-		operation = "QUERY 1 1 1 2 2 2";
-		operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-		operationDTO.setType(ETypeOperation.QUERY);
-		operationDTO.setOperation(operation);
-		secondCubeDTO.getOperations().add(operationDTO);
+			// QUERY 1 1 1 1 1 1
+			operation = "QUERY 1 1 1 1 1 1";
+			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
+			operationDTO.setType(ETypeOperation.QUERY);
+			operationDTO.setOperation(operation);
+			secondCubeDTO.getOperations().add(operationDTO);
 
-		// QUERY 2 2 2 2 2 2
-		operation = "QUERY 2 2 2 2 2 2";
-		operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-		operationDTO.setType(ETypeOperation.QUERY);
-		operationDTO.setOperation(operation);
-		secondCubeDTO.getOperations().add(operationDTO);
+			// QUERY 1 1 1 2 2 2
+			operation = "QUERY 1 1 1 2 2 2";
+			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
+			operationDTO.setType(ETypeOperation.QUERY);
+			operationDTO.setOperation(operation);
+			secondCubeDTO.getOperations().add(operationDTO);
 
-		testCases.getLstCases().add(cubeDTO);
-		testCases.getLstCases().add(secondCubeDTO);
-		cubeService.processTestCases(testCases);
-		
-		
-		assertThat(testCases.getStatus(),is(200));
-		assertThat(testCases.getLstResults(),hasSize(6));
-		assertThat(testCases.getLstResults(), contains(4l,4l,27l,0l,1l,1l));
-		
+			// QUERY 2 2 2 2 2 2
+			operation = "QUERY 2 2 2 2 2 2";
+			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
+			operationDTO.setType(ETypeOperation.QUERY);
+			operationDTO.setOperation(operation);
+			secondCubeDTO.getOperations().add(operationDTO);
+
+			testCases.getLstCases().add(cubeDTO);
+			testCases.getLstCases().add(secondCubeDTO);
+			cubeService.processTestCases(testCases);
+
+			assertThat(testCases.getStatus(), is(200));
+			assertThat(testCases.getLstResults(), hasSize(6));
+			assertThat(testCases.getLstResults(), contains(4l, 4l, 27l, 0l, 1l, 1l));
+
+		} catch (CubeException e) {
+			fail(e.getMessage());
+		}
 	}
 
 }

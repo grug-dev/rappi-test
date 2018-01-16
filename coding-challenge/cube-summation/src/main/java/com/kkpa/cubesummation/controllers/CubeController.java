@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kkpa.cubesummation.dto.CubeDTO;
-import com.kkpa.cubesummation.dto.CubeTestCases;
+import com.kkpa.cubesummation.dto.CubeTestCasesDTO;
 import com.kkpa.cubesummation.dto.OperationDTO;
 import com.kkpa.cubesummation.enums.ECodeStatus;
 import com.kkpa.cubesummation.exceptions.CubeException;
@@ -36,13 +36,13 @@ public class CubeController {
 	
 	
 	@PostMapping("/upload")
-    public ResponseEntity<CubeTestCases> uploadFile(@RequestParam("file") MultipartFile uploadfile) {
-		 CubeTestCases cubeTestCases =  getCubeTestCases();
+    public ResponseEntity<CubeTestCasesDTO> uploadFile(@RequestParam("file") MultipartFile uploadfile) {
+		 CubeTestCasesDTO cubeTestCases =  getCubeTestCases();
 
         if (uploadfile.isEmpty()) {
         	cubeTestCases.setStatus(ECodeStatus.ERROR.getCode());
         	cubeTestCases.setMsg("El archivo está vacío");
-            return new ResponseEntity<CubeTestCases>(cubeTestCases, HttpStatus.OK);
+            return new ResponseEntity<CubeTestCasesDTO>(cubeTestCases, HttpStatus.OK);
         }
 
         try {
@@ -103,10 +103,10 @@ public class CubeController {
         		cubeTestCases.setStatus(ECodeStatus.ERROR.getCode());
         	}
         	
-        	new ResponseEntity<CubeTestCases>( cubeTestCases, new HttpHeaders(), HttpStatus.OK);
+        	new ResponseEntity<CubeTestCasesDTO>( cubeTestCases, new HttpHeaders(), HttpStatus.OK);
         }
 
-        return new ResponseEntity<CubeTestCases>( cubeTestCases, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<CubeTestCasesDTO>( cubeTestCases, new HttpHeaders(), HttpStatus.OK);
 
     }
 	
@@ -118,8 +118,8 @@ public class CubeController {
 		return (CubeDTO) appCtx.getBean("cubeDTO");
 	}
 	
-	private CubeTestCases getCubeTestCases() {
-		return (CubeTestCases) appCtx.getBean("cubeTestCases");
+	private CubeTestCasesDTO getCubeTestCases() {
+		return (CubeTestCasesDTO) appCtx.getBean("cubeTestCases");
 	}
 
 }

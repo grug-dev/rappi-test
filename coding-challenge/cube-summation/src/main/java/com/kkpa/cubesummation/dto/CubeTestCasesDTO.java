@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component("cubeTestCases")
 @Scope("prototype")
-public class CubeTestCases {
+public class CubeTestCasesDTO {
+
+	private int status;
+
+	private String msg;
 
 	private List<CubeDTO> lstCases = new ArrayList<CubeDTO>();
 
 	private List<Long> lstResults = new ArrayList<Long>();
-	
-	private int status;
-	
-	private String msg;
-	
+
 	public List<CubeDTO> getLstCases() {
 		return lstCases;
 	}
@@ -49,5 +49,5 @@ public class CubeTestCases {
 	public void setLstResults(List<Long> lstResults) {
 		this.lstResults = lstResults;
 	}
-	
+
 }
