@@ -1,8 +1,8 @@
 # Tabla de Contenido
 
 * **[Problema](#problema)**<br>
-* **[Solución](#soluci%C3%B3n)**<br>
-* **[Capa Aplicación](#capa-aplicaci%C3%B3n)**<br>
+* **[Solución](#solucion)**<br>
+* **[Capa Aplicación](#capa-aplicacion)**<br>
 * **[Responsabilidades](#responsabilidades)**<br>
 
 # Problema
