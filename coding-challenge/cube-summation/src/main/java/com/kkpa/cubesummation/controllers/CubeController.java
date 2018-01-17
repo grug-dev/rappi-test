@@ -36,16 +36,15 @@ public class CubeController {
 	
 	
 	@PostMapping("/upload")
-    public ResponseEntity<CubeTestCasesDTO> uploadFile(@RequestParam("file") MultipartFile uploadfile) {
+    public ResponseEntity<CubeTestCasesDTO> uploadFile(@RequestParam("file") MultipartFile uploadfile) throws CubeException , Exception{
 		 CubeTestCasesDTO cubeTestCases =  getCubeTestCases();
-
+		 
         if (uploadfile.isEmpty()) {
         	cubeTestCases.setStatus(ECodeStatus.ERROR.getCode());
         	cubeTestCases.setMsg("El archivo está vacío");
             return new ResponseEntity<CubeTestCasesDTO>(cubeTestCases, HttpStatus.OK);
         }
 
-        try {
         	BufferedReader reader = new BufferedReader(new InputStreamReader(uploadfile.getInputStream()));
             String line = null;            
             String lineNxM = null;
@@ -92,19 +91,6 @@ public class CubeController {
             // Process Test Cases
             cubeService.processTestCases(cubeTestCases);
             
-
-        }  catch (Exception e) {
-        	e.printStackTrace();        	
-        	if (e instanceof CubeException) {
-        		cubeTestCases.setStatus(((CubeException) e).getCode());
-        		cubeTestCases.setMsg(((CubeException) e).getMsg());
-        	}else {
-        		cubeTestCases.setMsg(ECodeStatus.ERROR.getMsg());
-        		cubeTestCases.setStatus(ECodeStatus.ERROR.getCode());
-        	}
-        	
-        	new ResponseEntity<CubeTestCasesDTO>( cubeTestCases, new HttpHeaders(), HttpStatus.OK);
-        }
 
         return new ResponseEntity<CubeTestCasesDTO>( cubeTestCases, new HttpHeaders(), HttpStatus.OK);
 
