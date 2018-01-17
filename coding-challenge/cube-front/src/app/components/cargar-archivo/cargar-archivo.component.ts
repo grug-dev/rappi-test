@@ -15,7 +15,7 @@ export class CargarArchivoComponent implements OnInit {
   currentfile: FileItem ;
   isOverElement = false;
   txtResults: any;
-  results: any;
+  results: CubeTestCases;
 
   constructor(private sendFileService: SendFileService) { }
 
@@ -40,6 +40,8 @@ export class CargarArchivoComponent implements OnInit {
                         this.currentfile = null;
                         this.results.lstCases = [];                        
                       }                      
+                    }, error => {
+                      this.results = { status: 500 , msg: "El servicio no se encuentra disponible." , lstCases: [] , lstResults: [] } ;                      
                     });
   }
 
