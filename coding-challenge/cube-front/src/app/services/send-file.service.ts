@@ -20,10 +20,7 @@ export class SendFileService {
     formData.append('file', fileItem.archivo);
     const url: string = environment.HTTP_URL + 'cube/upload';
 
-     return this.http.post(url, formData).catch((err: HttpErrorResponse) => {        
-        console.error('Ha ocurrido un error invocando el servicio:', err.error);
-        return err;
-      });;
+     return this.http.post(url, formData);
   }
 
 }
