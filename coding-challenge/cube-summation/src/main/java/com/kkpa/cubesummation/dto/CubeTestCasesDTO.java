@@ -50,4 +50,17 @@ public class CubeTestCasesDTO {
 		this.lstResults = lstResults;
 	}
 
+	@Override
+	public String toString() {
+		return "CubeTestCasesDTO [lstTestCases=" + toStringTestCases(lstCases) + "]";
+	}
+	
+	private String toStringTestCases(List<CubeDTO> lstCases) {
+		if (lstCases.isEmpty()) {
+			return  "0";
+		}
+		
+		return lstCases.stream().map(c -> c.toString()).reduce( (a,b) -> a.toString() + "-" + b.toString()).get();
+	}
+
 }

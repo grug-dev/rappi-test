@@ -20,6 +20,8 @@ public class CubeDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7561487738206574760L;
+	
+	private int status = ECodeStatus.OK.getCode();
 
 	private int matrixN;
 	
@@ -27,10 +29,17 @@ public class CubeDTO implements Serializable {
 	
 	private List<Long> lstResults = new ArrayList<Long>();
 	
-	private int status = ECodeStatus.OK.getCode();
 	
 	@JsonIgnore
 	private Map<String,Long> mapCube = new HashMap<String,Long>();
+	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
 	public int getMatrixN() {
 		return matrixN;
@@ -64,12 +73,12 @@ public class CubeDTO implements Serializable {
 		this.mapCube = mapCube;
 	}
 
-	public int getStatus() {
-		return status;
-	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	@Override
+	public String toString() {
+		return "CubeDTO [N=" + matrixN + ", operations=" + operations + "]";
 	}
+	
+	
 	
 }

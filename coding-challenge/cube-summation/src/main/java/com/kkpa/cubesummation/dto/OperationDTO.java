@@ -15,7 +15,7 @@ public class OperationDTO {
 	private ETypeOperation type;
 	
 	private int status = ECodeStatus.OK.getCode();
-	
+		
 	private String result = "0";
 	
 	public String getOperation() {
@@ -49,5 +49,12 @@ public class OperationDTO {
 	public void setType(ETypeOperation type) {
 		this.type = type;
 	}
+
+	@Override
+	public String toString() {
+		return "OperationDTO [operation=" + operation +  "]";
+	}
+	
+	
 	
 }

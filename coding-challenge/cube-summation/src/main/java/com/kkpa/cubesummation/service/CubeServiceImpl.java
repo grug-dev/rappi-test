@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.kkpa.cubesummation.aop.LogExecutionTime;
 import com.kkpa.cubesummation.dto.CubeDTO;
 import com.kkpa.cubesummation.dto.CubeTestCasesDTO;
 import com.kkpa.cubesummation.enums.ECodeStatus;
@@ -20,6 +21,7 @@ public class CubeServiceImpl implements CubeService {
 	private ContextCubeStrategy  ctxCube;
 	
 	@Override
+	@LogExecutionTime
 	public void processCube(CubeDTO cubeDTO) throws CubeException {
 		try {
 			cubeDTO.getOperations().stream().forEach( oper -> {
@@ -47,6 +49,7 @@ public class CubeServiceImpl implements CubeService {
 	}
 
 	@Override
+	@LogExecutionTime
 	public void processTestCases(CubeTestCasesDTO testCases) throws CubeException {
 		if (testCases == null || testCases.getLstCases().isEmpty()) {
 			testCases.setStatus(ECodeStatus.ERROR.getCode());
