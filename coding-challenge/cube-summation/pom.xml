@@ -6,7 +6,7 @@
 	<groupId>com.kkpa</groupId>
 	<artifactId>cube-summation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>cube-summation</name>
 	<description>Demo project for Resolve Cube Summation Problem</description>
@@ -22,6 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<start-class>com.kkpa.cubesummation.CubeSummationApplication</start-class>
 	</properties>
 
 	<dependencies>
@@ -45,9 +46,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
+		<finalName>CS</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

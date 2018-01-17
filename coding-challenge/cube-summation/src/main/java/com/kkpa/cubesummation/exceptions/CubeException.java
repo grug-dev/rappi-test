@@ -4,6 +4,11 @@ import com.kkpa.cubesummation.enums.ECodeStatus;
 
 public class CubeException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8840975140051330420L;
+
 	private int code;
 	
 	private String msg;
