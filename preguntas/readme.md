@@ -19,15 +19,19 @@ ayudan a identificar si nuestra clase cumple con este princpio:
 
 *	Que exista un estándar de nombramiento en los objetos involucrados en las distintas capas.
 *	Que las variables estén nombradas con palabras dicientes relacionadas al contenido/acción que realicen; Y en camelCase.
-*	Un uso adecuado de comentarios. (Dicientes y enfocados al negocio). Sin exceso, y sin explicación de lo que hace el código.
+*	Si se captura una excepción, se debe realizar alguna acción con dicha excepción y no solo imprimir el stacktrace.
+*	Un uso adecuado de comentarios. (Dicientes y enfocados al negocio). 
+*	Los comentarios no deben ser extensos, y sólo explicar el código en procesos complejos.
 *	Uso de literales en mayúscula y creados como instancia de clase de tipo static final.
 *	Clases y métodos sin exceso de líneas de código.
-*	Que no existan warnings en las clases, printstacktrace.
+*	Que no existan warnings del IDE en las clases.
 *	Que se tenga un estándar de identación de las líneas de código configuradas en el IDE.
 *	Que todos los métodos expuestos en una interfaz se utilicen en las clases que lo implementen.
 *	Que no exista código comentareado ya que genera dudas del por qué.
-*	Se realizan validaciones de null.
+*	Que Se realicen validaciones de null.
 *	Que las variables de clase se instancien y se obtengan mediante los métodos get.
+*	En los métodos locales, declarar las variables al inicio si es fácilmente leíble donde se usa la variable. De lo contrario, crear la variable
+en la línea anterior de su uso.
 
 
 3.	<strong>¿Qué es un microservicio?, ventajas y desventajas de los microservicios</strong>
