@@ -1,9 +1,11 @@
 # Tabla de Contenido
 
 * **[Problema](#problema)**<br>
-* **[Solución](#solucion)**<br>
+* **[Implementación](#implementacion)**<br>
 * **[Capa Aplicación](#capa-aplicacion)**<br>
 * **[Responsabilidades](#responsabilidades)**<br>
+* **[Instalación](#instalacion)**<br>
+* **[Demo](#demo)**<br>
 
 # Problema
 
@@ -57,7 +59,7 @@ QUERY 2 2 2 2 2 2
 1
 1
 ```
-# Solución
+# Implementacion
 
 *	Se implementa un componente de angular para recibir un archivo de texto plano mediante drag and drop.
 
@@ -77,17 +79,17 @@ del proceso del archivo.
 		QUERY 1 1 1 2 2 2
 		QUERY 2 2 2 2 2 2
 		```
-![alt text](entrada.png)
+![El navegador no pudo cargar la imagen](entrada.png)
 
 
 *	El mecanismo escogido para la salida está compuesto por una tabla donde se visualiza el resultado de cada operación, y una consola donde se visualiza
 el output de las operaciones QUERY aplicadas en los distintos test cases cargados en el archivo plano.
 
-![alt text](salida.png)
+![El navegador no pudo cargar la imagen](salida.png)
 
 # Capa Aplicacion
 
-![alt text](capas_app.png)
+![El navegador no pudo cargar la imagen](capas_app.png)
 
 # Responsabilidades
 
@@ -195,3 +197,41 @@ DTO con scope prototype que tiene asociado los atributos relacionados a la Matri
 #### CubeTestCasesDTO
 
 DTO con scope prototype que tiene asociado los n-test cases recibidos en el problema. Cada Test Case es un objeto de tipo CubeDTO.
+
+### CubeControllerAdvice
+
+Clase responsable de manejar las excepciones a los controladores que reciben las peticiones HTTP.
+
+### LogExecutionAspect
+
+Clase invocada en runtime con el uso de la anotación @LogExecutionTime sobre los métodos para realizar los registros de LOG de
+la entrada y salida a un método.
+
+# Instalacion
+
+Por defecto la aplicación utiliza el puerto 9999 y el base href /CS/. 
+```http://localhost:9999/CS/```
+
+## Despliegue WAR
+
+Desplegar el WAR en un servidor web. El WAR fue testado con el servidor Tomcat 9.
+
+[Cube Summation War](CS.war)
+
+## Manual
+
+### Cube-Front
+
+*	Es un proyecto de angular construido con Angular-CLI 1.6.3.
+*	Requiere previa instalación de NodeJS desde la versión Node 6.9.0 en adelante
+*	La instalación de angular CLI se realiza mediante el Node Package Manager  ejecutando el comando ```npm install -g @angular/cli```
+*	Para correr la aplicación, se debe ejecutar el comando ```ng serve -o``` sobre la carpeta descargada *cube-front*
+
+### Cube-Summation
+
+*	Es un proyecto java creado con Spring Boot 1.5.9. 
+*	Para correrlo, se puede ejecutar el comando maven ```mvn spring-boot:run``` sobre la carpeta del proyecto *cube-summation*
+
+# Demo
+
+[Demo](demo.exe)
