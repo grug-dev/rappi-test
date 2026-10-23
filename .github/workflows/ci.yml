@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  cube-summation:
+    name: cube-summation tests (Java 8)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: coding-challenge/cube-summation
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '8'
+          cache: maven
+          cache-dependency-path: coding-challenge/cube-summation/pom.xml
+
+      # The Maven wrapper in the project is old (Maven 3.5.2), so use the
+      # Maven that comes with the runner.
+      - name: Run tests
+        run: mvn -B -ntp test
