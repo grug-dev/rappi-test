@@ -1,13 +1,8 @@
 package com.kkpa.cubesummation.dto;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.kkpa.cubesummation.enums.ECodeStatus;
 import com.kkpa.cubesummation.enums.ETypeOperation;
 
-@Component("operationDTO")
-@Scope("prototype")
 public class OperationDTO {
 
 	private String operation;

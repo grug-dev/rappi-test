@@ -3,11 +3,6 @@ package com.kkpa.cubesummation.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-@Component("cubeTestCases")
-@Scope("prototype")
 public class CubeTestCasesDTO {
 
 	private int status;

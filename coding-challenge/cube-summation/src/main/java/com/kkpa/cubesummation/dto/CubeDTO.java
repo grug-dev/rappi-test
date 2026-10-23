@@ -6,14 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kkpa.cubesummation.enums.ECodeStatus;
 
-@Component("cubeDTO")
-@Scope("prototype")
 public class CubeDTO implements Serializable {
 
 	/**

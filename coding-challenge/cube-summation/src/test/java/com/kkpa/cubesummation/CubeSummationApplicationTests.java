@@ -1,334 +1,69 @@
 package com.kkpa.cubesummation;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.After;
-import org.junit.Before;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
-import com.kkpa.cubesummation.dto.CubeDTO;
-import com.kkpa.cubesummation.dto.CubeTestCasesDTO;
-import com.kkpa.cubesummation.dto.OperationDTO;
 import com.kkpa.cubesummation.enums.ECodeStatus;
-import com.kkpa.cubesummation.enums.ETypeOperation;
-import com.kkpa.cubesummation.exceptions.CubeException;
-import com.kkpa.cubesummation.service.CubeService;
 
+/**
+ * Starts the Spring context and calls POST /cube/upload end to end.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureMockMvc
 public class CubeSummationApplicationTests {
 
 	@Autowired
-	private ApplicationContext appCtx;
+	private MockMvc mockMvc;
 
-	private CubeDTO cubeDTO;
-
-	private CubeService cubeService;
-
-	@Before
-	public void setUp() {
-		cubeDTO = (CubeDTO) appCtx.getBean("cubeDTO");
-		cubeService = (CubeService) appCtx.getBean("cubeSrv");
-	}
-
-	@After
-	public void tearDown() {
-		cubeDTO = null;
-	}
-
-	/**
-	 * Test following Operation: 4 1 UPDATING 2 2 3
-	 */
 	@Test
-	public void testFailUpdateOperation() {
-		final String operation = "UPDATING 2 2 3";
-
-		OperationDTO operationDTO = new OperationDTO();
-		operationDTO.setType(ETypeOperation.UPDATE);
-		operationDTO.setOperation(operation);
-		cubeDTO.getOperations().add(operationDTO);
-		cubeDTO.setMatrixN(4);
-		try {
-			cubeService.processCube(cubeDTO);
-		} catch (CubeException e) {
-			assertEquals(ECodeStatus.OPERATION_UNAUTHORIZED.getCode(), e.getCode());
-		}
-	}
-
-	/**
-	 * Test following Operation: 4 1 CONSULTA 1 1 1 3 3 3
-	 */
-	@Test
-	public void testFailQueryOperation() {
-		final String operation = "CONSULTA 1 1 1 3 3 3";
-
-		OperationDTO operationDTO = new OperationDTO();
-		operationDTO.setType(ETypeOperation.QUERY);
-		operationDTO.setOperation(operation);
-		cubeDTO.getOperations().add(operationDTO);
-		cubeDTO.setMatrixN(4);
-		try {
-			cubeService.processCube(cubeDTO);
-		} catch (CubeException e) {
-			assertEquals(ECodeStatus.OPERATION_UNAUTHORIZED.getCode(), e.getCode());
-		}
-	}
-
-	/**
-	 * Test Operation: 4 1 UPDATE 2 2 2 4
-	 */
-	@Test
-	public void testSucessSingleUpdateOperation() {
-		final String operation = "UPDATE 2 2 2 4";
-
-		OperationDTO operationDTO = new OperationDTO();
-		operationDTO.setType(ETypeOperation.UPDATE);
-		operationDTO.setOperation(operation);
-		try {
-			cubeDTO.getOperations().add(operationDTO);
-			cubeDTO.setMatrixN(4);
-			cubeService.processCube(cubeDTO);
-			// Assert Status & Result
-			assertEquals(200, operationDTO.getStatus());
-			assertEquals("OK", operationDTO.getResult());
-
-		} catch (CubeException e) {
-			fail(e.getMessage());
-		}
-	}
-
-	/**
-	 * Test Operation: 4 1 UPDATE 2 2 3
-	 */
-	@Test
-	public void testSingleFailUpdateOperation() {
-		final String operation = "UPDATE 2 2 3";
-
-		OperationDTO operationDTO = new OperationDTO();
-		operationDTO.setType(ETypeOperation.UPDATE);
-		operationDTO.setOperation(operation);
-		cubeDTO.getOperations().add(operationDTO);
-		cubeDTO.setMatrixN(4);
-		try {
-			cubeService.processCube(cubeDTO);
-		} catch (CubeException e) {
-			assertEquals(ECodeStatus.UPDATE_RULE_LENGTH_ERROR.getCode(), e.getCode());
-		}
-	}
-
-	/**
-	 * Test Next Operation: 2 QUERY 1 1
-	 */
-	@Test
-	public void testSingleFailQueryOperation() {
-		final String operation = "QUERY 1 1";
-
-		OperationDTO operationDTO = new OperationDTO();
-		operationDTO.setType(ETypeOperation.QUERY);
-		operationDTO.setOperation(operation);
-		cubeDTO.getOperations().add(operationDTO);
-		cubeDTO.setMatrixN(4);
-		try {
-			cubeService.processCube(cubeDTO);
-		} catch (CubeException e) {
-			assertEquals(ECodeStatus.QUERY_RULE_LENGTH_ERROR.getCode(), e.getCode());
+	public void uploadSampleFileReturnsSampleOutput() throws Exception {
+		MockMultipartFile file;
+		try (InputStream sample = getClass().getResourceAsStream("/sample-input.txt")) {
+			file = new MockMultipartFile("file", "sample-input.txt", "text/plain", sample);
 		}
 
-	}
-
-	/**
-	 * Test Next Operation: 4 1 QUERY 1 1 1 3 3 3
-	 */
-	@Test
-	public void testSucessSingleQueryOperation() {
-		final String operation = "QUERY 1 1 1 3 3 3";
-
-		OperationDTO operationDTO = new OperationDTO();
-		operationDTO.setType(ETypeOperation.QUERY);
-		operationDTO.setOperation(operation);
-		try {
-			cubeDTO.getOperations().add(operationDTO);
-			cubeDTO.setMatrixN(4);
-			cubeService.processCube(cubeDTO);
-			// Assert Status & Result
-			assertEquals(200, operationDTO.getStatus());
-			assertEquals("0", operationDTO.getResult());
-
-		} catch (CubeException e) {
-			fail(e.getMessage());
-		}
-	}
-
-	/**
-	 * Test: <br>
-	 * 1 <br>
-	 * 4 5 <br>
-	 * UPDATE 2 2 2 4 <br>
-	 * QUERY 1 1 1 3 3 3 <br>
-	 * UPDATE 1 1 1 23 <br>
-	 * QUERY 2 2 2 4 4 4 <br>
-	 * QUERY 1 1 1 3 3 3 <br>
-	 */
-	@Test
-	public void testSuccessSingleTestCase() {
-		String operation = null;
-		OperationDTO operationDTO = null;
-		try {
-			cubeDTO.setMatrixN(4);
-			// UPDATE 2 2 2 4
-			operation = "UPDATE 2 2 2 4";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.UPDATE);
-			operationDTO.setOperation(operation);
-			cubeDTO.getOperations().add(operationDTO);
-
-			// QUERY 1 1 1 3 3 3
-			operation = "QUERY 1 1 1 3 3 3";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.QUERY);
-			operationDTO.setOperation(operation);
-			cubeDTO.getOperations().add(operationDTO);
-
-			// UPDATE 1 1 1 23
-			operation = "UPDATE 1 1 1 23";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.UPDATE);
-			operationDTO.setOperation(operation);
-			cubeDTO.getOperations().add(operationDTO);
-
-			// QUERY 2 2 2 4 4 4
-			operation = "QUERY 2 2 2 4 4 4";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.QUERY);
-			operationDTO.setOperation(operation);
-			cubeDTO.getOperations().add(operationDTO);
-
-			// QUERY 1 1 1 3 3 3
-			operation = "QUERY 1 1 1 3 3 3";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.QUERY);
-			operationDTO.setOperation(operation);
-			cubeDTO.getOperations().add(operationDTO);
-
-			cubeService.processCube(cubeDTO);
-			// Assert Status
-			assertEquals(200, cubeDTO.getStatus());
-			// 3 Queries
-			assertThat(cubeDTO.getResult(), hasSize(3));
-			// 3 Results
-			assertThat(cubeDTO.getResult(), contains(4l, 4l, 27l));
-
-		} catch (CubeException e) {
-			fail(e.getMessage());
-		}
+		mockMvc.perform(fileUpload("/cube/upload").file(file))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.status", is(ECodeStatus.OK.getCode())))
+				.andExpect(jsonPath("$.lstResults", contains(4, 4, 27, 0, 1, 1)));
 	}
 
 	@Test
-	public void testMultipleSuccessTestCases() {
-		CubeTestCasesDTO testCases = (CubeTestCasesDTO) appCtx.getBean("cubeTestCases");
-		String operation = null;
-		OperationDTO operationDTO = null;
+	public void uploadBadOperationReturnsErrorStatusInBody() throws Exception {
+		byte[] content = "1\n4 1\nUPDATING 2 2 3\n".getBytes(StandardCharsets.UTF_8);
+		MockMultipartFile file = new MockMultipartFile("file", "bad.txt", "text/plain", content);
 
-		try {
-			// ****** 1 Case ********
-			// 4 5
-			// UPDATE 2 2 2 1
-			// QUERY 1 1 1 1 1 1
-			// QUERY 1 1 1 2 2 2
-			// QUERY 2 2 2 2 2 2
-			cubeDTO.setMatrixN(4);
-			// UPDATE 2 2 2 4
-			operation = "UPDATE 2 2 2 4";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.UPDATE);
-			operationDTO.setOperation(operation);
-			cubeDTO.getOperations().add(operationDTO);
+		// HTTP 200 on purpose: the front reads the error from the body.
+		mockMvc.perform(fileUpload("/cube/upload").file(file))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.status", is(ECodeStatus.OPERATION_UNAUTHORIZED.getCode())))
+				.andExpect(jsonPath("$.lstResults", empty()));
+	}
 
-			// QUERY 1 1 1 3 3 3
-			operation = "QUERY 1 1 1 3 3 3";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.QUERY);
-			operationDTO.setOperation(operation);
-			cubeDTO.getOperations().add(operationDTO);
+	@Test
+	public void uploadEmptyFileReturnsEmptyFileStatus() throws Exception {
+		MockMultipartFile file = new MockMultipartFile("file", "empty.txt", "text/plain", new byte[0]);
 
-			// UPDATE 1 1 1 23
-			operation = "UPDATE 1 1 1 23";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.UPDATE);
-			operationDTO.setOperation(operation);
-			cubeDTO.getOperations().add(operationDTO);
-
-			// QUERY 2 2 2 4 4 4
-			operation = "QUERY 2 2 2 4 4 4";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.QUERY);
-			operationDTO.setOperation(operation);
-			cubeDTO.getOperations().add(operationDTO);
-
-			// QUERY 1 1 1 3 3 3
-			operation = "QUERY 1 1 1 3 3 3";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.QUERY);
-			operationDTO.setOperation(operation);
-			cubeDTO.getOperations().add(operationDTO);
-
-			// ****** 2 Case ********
-			// 2 4
-			// UPDATE 2 2 2 1
-			// QUERY 1 1 1 1 1 1
-			// QUERY 1 1 1 2 2 2
-			// QUERY 2 2 2 2 2 2
-			CubeDTO secondCubeDTO = (CubeDTO) appCtx.getBean("cubeDTO");
-			secondCubeDTO.setMatrixN(4);
-			// UPDATE 2 2 2 1
-			operation = "UPDATE 2 2 2 1";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.UPDATE);
-			operationDTO.setOperation(operation);
-			secondCubeDTO.getOperations().add(operationDTO);
-
-			// QUERY 1 1 1 1 1 1
-			operation = "QUERY 1 1 1 1 1 1";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.QUERY);
-			operationDTO.setOperation(operation);
-			secondCubeDTO.getOperations().add(operationDTO);
-
-			// QUERY 1 1 1 2 2 2
-			operation = "QUERY 1 1 1 2 2 2";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.QUERY);
-			operationDTO.setOperation(operation);
-			secondCubeDTO.getOperations().add(operationDTO);
-
-			// QUERY 2 2 2 2 2 2
-			operation = "QUERY 2 2 2 2 2 2";
-			operationDTO = (OperationDTO) appCtx.getBean("operationDTO");
-			operationDTO.setType(ETypeOperation.QUERY);
-			operationDTO.setOperation(operation);
-			secondCubeDTO.getOperations().add(operationDTO);
-
-			testCases.getLstCases().add(cubeDTO);
-			testCases.getLstCases().add(secondCubeDTO);
-			cubeService.processTestCases(testCases);
-
-			assertThat(testCases.getStatus(), is(200));
-			assertThat(testCases.getLstResults(), hasSize(6));
-			assertThat(testCases.getLstResults(), contains(4l, 4l, 27l, 0l, 1l, 1l));
-
-		} catch (CubeException e) {
-			fail(e.getMessage());
-		}
+		mockMvc.perform(fileUpload("/cube/upload").file(file))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.status", is(ECodeStatus.EMPTY_FILE.getCode())));
 	}
 
 }
