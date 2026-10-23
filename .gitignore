@@ -1,0 +1,27 @@
+# Build output
+target/
+bin/
+build/
+dist/
+*.class
+*.war
+*.exe
+
+# Dependencies
+node_modules/
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+.factorypath
+.springBeans
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
