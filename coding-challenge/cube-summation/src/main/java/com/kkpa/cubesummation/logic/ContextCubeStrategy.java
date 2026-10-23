@@ -32,8 +32,7 @@ public class ContextCubeStrategy {
 			strategyName = "queryCubeStrategy";
 		}
 		if (strategyName == null) {
-			ECodeStatus operStatus = ECodeStatus.OPERATION_UNAUTHORIZED;
-			throw new CubeException(operStatus.getCode(), operationDTO.getOperation() + "-" + operStatus.getMsg());
+			throw new CubeException(ECodeStatus.OPERATION_UNAUTHORIZED, operationDTO.getOperation());
 		}
 		
 		this.strategy = (CubeStrategy) appCtx.getBean(strategyName);

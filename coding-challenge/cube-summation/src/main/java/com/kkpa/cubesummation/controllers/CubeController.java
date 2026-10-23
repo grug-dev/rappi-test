@@ -60,17 +60,13 @@ public class CubeController {
                 	 try {                		 
                 		 n = Integer.parseInt(nLine);
                 	 }catch (Exception e) {      
-                		 ECodeStatus error = ECodeStatus.MATRIX_ERROR;     
-                		 error.setMsg(error.getMsg() + " - " + nLine);
-                		 throw new CubeException(error);
+                		 throw new CubeException(ECodeStatus.MATRIX_ERROR, nLine);
                 	 }
                 	 String mLine = token.nextElement().toString();
                 	 try {
                 		 m = Integer.parseInt(mLine);
                 	 } catch (Exception e) {
-                		 ECodeStatus error = ECodeStatus.OPERATION_ERROR;     
-                		 error.setMsg(error.getMsg() + " - " + mLine);
-                		 throw new CubeException(error);
+                		 throw new CubeException(ECodeStatus.OPERATION_ERROR, mLine);
                 	 }
                 	
                 	 continue;
