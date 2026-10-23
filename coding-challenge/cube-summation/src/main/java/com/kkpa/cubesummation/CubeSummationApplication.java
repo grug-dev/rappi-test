@@ -16,6 +16,7 @@ public class CubeSummationApplication extends SpringBootServletInitializer {
 		SpringApplication.run(CubeSummationApplication.class, args);
 	}
 	
+	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(CubeSummationApplication.class);
     }

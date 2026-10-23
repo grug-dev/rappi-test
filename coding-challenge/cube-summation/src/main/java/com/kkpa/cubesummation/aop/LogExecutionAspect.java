@@ -18,16 +18,17 @@ public class LogExecutionAspect {
 		long start = System.currentTimeMillis();
 		String strArgs = "NO ARGS";
 		
-		Object[] args = joinPoint.getArgs() != null ? joinPoint.getArgs() : null;
-		if (args != null) {
-			StringBuffer buffer = new StringBuffer();
+		Object[] args = joinPoint.getArgs();
+		if (args != null && args.length > 0) {
+			StringBuilder builder = new StringBuilder();
 			for (Object obj : args) {
-				buffer.append(obj.toString());
+				// String.valueOf avoids a NullPointerException on null arguments.
+				builder.append(String.valueOf(obj));
 			}
-			strArgs = buffer.toString();
+			strArgs = builder.toString();
 		}
 		String method = joinPoint.getSignature().getName();
-		String className =  joinPoint.getSignature().getName() ;
+		String className = joinPoint.getSignature().getDeclaringType().getSimpleName();
 		String initInfo = String.format("[INICIO] [%s] - [%s] - [%s]", className, method, strArgs);
 		LOGGER.info(initInfo); 
 	    
