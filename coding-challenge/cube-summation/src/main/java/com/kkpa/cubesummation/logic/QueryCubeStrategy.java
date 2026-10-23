@@ -10,29 +10,36 @@ import com.kkpa.cubesummation.enums.ECodeStatus;
 import com.kkpa.cubesummation.enums.ETypeOperation;
 import com.kkpa.cubesummation.exceptions.CubeException;
 
-@Component("queryCubeStrategy")
+/**
+ * Runs "QUERY x1 y1 z1 x2 y2 z2": sums the blocks inside the range.
+ */
+@Component
 public class QueryCubeStrategy implements CubeStrategy {
 
 	@Override
+	public ETypeOperation type() {
+		return ETypeOperation.QUERY;
+	}
+
+	@Override
 	public void process(OperationDTO operDTO, Map<String, Long> mapCube) throws CubeException {
-		String operation = operDTO.getOperation();
+		String[] partOperation = CubeStrategy.split(operDTO.getOperation());
 		long sumBlock = 0;
 		operDTO.setType(ETypeOperation.QUERY);
-		
-		String[] partOperation = operation.split(" ");
+
 		if (partOperation.length != 7) {
 			throw new CubeException(ECodeStatus.QUERY_RULE_LENGTH_ERROR);
 		}
 		if (!partOperation[0].equals(ETypeOperation.QUERY.toString())) {
 			throw new CubeException(ECodeStatus.QUERY_OPERATION);
 		}
-		int x0 = Integer.parseInt(partOperation[1]);
-		int y0 = Integer.parseInt(partOperation[2]);
-		int z0 = Integer.parseInt(partOperation[3]);
-		int xN = Integer.parseInt(partOperation[4]);
-		int yN = Integer.parseInt(partOperation[5]);
-		int zN = Integer.parseInt(partOperation[6]);
-		
+		int x0 = CubeStrategy.toCoordinate(partOperation[1]);
+		int y0 = CubeStrategy.toCoordinate(partOperation[2]);
+		int z0 = CubeStrategy.toCoordinate(partOperation[3]);
+		int xN = CubeStrategy.toCoordinate(partOperation[4]);
+		int yN = CubeStrategy.toCoordinate(partOperation[5]);
+		int zN = CubeStrategy.toCoordinate(partOperation[6]);
+
 		for (Entry<String, Long> entry : mapCube.entrySet()) {
 			String[] key = entry.getKey().split(TOKEN_KEY_MAP);
 			int x = Integer.parseInt(key[0]);
@@ -46,7 +53,7 @@ public class QueryCubeStrategy implements CubeStrategy {
 		operDTO.setResult(String.valueOf(sumBlock));
 
 	}
-	
+
 	private static boolean isBetween(int value, int start, int end) {
 		return (value >= start && value <= end);
 	}

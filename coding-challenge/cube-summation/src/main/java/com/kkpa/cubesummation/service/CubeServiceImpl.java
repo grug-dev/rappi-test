@@ -1,7 +1,6 @@
 package com.kkpa.cubesummation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.kkpa.cubesummation.aop.LogExecutionTime;
@@ -17,7 +16,6 @@ public class CubeServiceImpl implements CubeService {
 
 	
 	@Autowired
-	@Qualifier("ctxCubeStrategy")
 	private ContextCubeStrategy  ctxCube;
 	
 	@Override

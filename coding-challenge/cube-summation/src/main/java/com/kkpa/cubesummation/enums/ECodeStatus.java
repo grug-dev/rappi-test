@@ -19,7 +19,8 @@ public enum ECodeStatus {
 	TEST_CASES_ERROR(317,"No se pudo obtener el número de test cases."),
 	NUMBER_ERROR(318,"Los valores de la operación deben ser números enteros."),
 	EMPTY_FILE(319,"El archivo está vacío"),
-	INCOMPLETE_FILE(320,"El archivo no tiene todas las operaciones esperadas.")
+	INCOMPLETE_FILE(320,"El archivo no tiene todas las operaciones esperadas."),
+	COORDINATE_ERROR(321,"Las coordenadas deben ser mayores o iguales a 1.")
 	;
 
 	private final int code;
